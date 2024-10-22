@@ -3,7 +3,7 @@ import { getProduct } from '../../data/products.js';
 import { getDeliveryOption } from '../../data/deliveryOptions.js';
 import formatCurrency from '../utils/money.js';
 
-export function renderPaymentSummary() {
+function renderPaymentSummary() {
     let productPriceCents = 0;
     let shippingPriceCents = 0;
 
@@ -12,7 +12,7 @@ export function renderPaymentSummary() {
         productPriceCents += product.priceCents * cartItem.quantity;
 
         const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
-        shippingPriceCents = deliveryOption.priceCents;
+        shippingPriceCents += deliveryOption.priceCents;
     });
 
     const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
@@ -55,4 +55,9 @@ export function renderPaymentSummary() {
     `;
 
    document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
+   console.log(productPriceCents)
+}
+
+export {
+  renderPaymentSummary
 }

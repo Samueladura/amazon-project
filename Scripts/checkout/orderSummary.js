@@ -1,13 +1,14 @@
 import { cart, removeFromCart, updateDeliveryOption } from '../../data/cart.js';
 import { products, getProduct } from '../../data/products.js';
-import { formartcurrency } from '../utils/money.js';
+import { formatCurrency } from '../utils/money.js';
 import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
+import { renderPaymentSummary } from './paymentSummary.js';
 
 const today = dayjs();
 const deliveryDate = today.add(7, 'days');
 console.log(deliveryDate.format('dddd, MMMM D'));
 
-function renderOrderSummary() {
+ function renderOrderSummary() {
     let cartSummaryHTML = '';
 
     cart.forEach((cartItem) => {
@@ -43,7 +44,7 @@ function renderOrderSummary() {
             ${matchingProduct.name}
         </div>
         <div class="product-price">
-            $${formartcurrency(matchingProduct.priceCents)}
+            $${formatCurrency(matchingProduct.priceCents)}
         </div>
         <div class="product-quantity">
             <span>
@@ -84,7 +85,7 @@ function renderOrderSummary() {
 
             const priceString = deliveryOption.priceCents === 0
                 ? 'FREE'
-                : `$${formartcurrency(deliveryOption.priceCents)}-`
+                : `$${formatCurrency(deliveryOption.priceCents)}-`
 
             const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
@@ -118,6 +119,8 @@ function renderOrderSummary() {
 
             const container = document.querySelector(`.js-cart-item-container-${productId}`)
             container.remove();
+
+            renderPaymentSummary();
         });
     });
 
